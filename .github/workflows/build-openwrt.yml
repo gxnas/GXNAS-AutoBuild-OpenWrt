@@ -96,7 +96,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 主人${{ env.WXFB_MESSAGE }}编译开始啦
-        desp: 主人您要编译的[${{ env.WXFB_MESSAGE }}]固件正在努力耕耘中,请耐心等待......
+        desp: 主人您要编译的[${{matrix.target}}]固件正在努力耕耘中,请耐心等待......
     
     - name: 开始安装编译所需系统
       env:
@@ -259,6 +259,7 @@ jobs:
         # find -name "*vmlinuz*" | xargs -i mv -f {} packages
         # find -name "*Image*" | xargs -i mv -f {} packages
         rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
+        gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
@@ -267,14 +268,14 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
-        name: .config-${{ env.NAME2 }}${{ env.NAME1 }}_${{ env.date }}
+        name: .config-${{matrix.target}}_${{ env.date }}
         path: ./config
 
     - name: 上传固件在github空间
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
-        name: OpenWrt-${{ env.NAME2 }}${{ env.NAME1 }}-firmware-${{ env.date }}
+        name: OpenWrt-${{matrix.target}}-${{ env.date }}
         path: ${{ env.FIRMWARE }}
 
     - name: 上传固件到「奶牛快传」和「WeTransfer」
@@ -303,8 +304,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
-        name: ${{ env.date1 }} 「 ${{ env.WXFB_MESSAGE }} 」固件
-        tag_name: ${{ env.date2 }}
+        name: ${{ env.date1 }} 「 ${{matrix.target}} 」固件
+        tag_name: ${{matrix.target}}-${{ env.date2 }}
         body: |            
             ☆  源码 : ${{ env.REPO_URL }}
             ☆  分支 : ${{ env.REPO_BRANCH }}
@@ -325,7 +326,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 恭喜主人${{ env.WXFB_MESSAGE }}固件编译成功！
-        desp: 我亲爱的主人您要编译的[ ${{ env.NAME2 }}${{ env.NAME1 }} ]固件顺利编译完成了！
+        desp: 我亲爱的主人您要编译的[ ${{matrix.target}} ]固件顺利编译完成了！
               
               
               完成时间：${{ env.date1 }}
