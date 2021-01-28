@@ -7,6 +7,18 @@
 #
 name: 编译OpenWrt固件
 on:
+  release:
+    types: [published]
+
+  push:
+    branches: 
+      - master
+    paths:
+      - '.github/workflows/build-openwrt.yml'
+  
+  watch:
+    types: [started]
+
   workflow_dispatch:
     inputs:
       ssh:
@@ -23,8 +35,8 @@ on:
         default: 'release-actions'
 
 #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
-#  schedule:
-#    - cron: 0 8 */5 * *
+  schedule:
+    - cron: 0 7 * * 6
 
 env: 
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
@@ -32,7 +44,7 @@ env:
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TZ: Asia/Shanghai
-  GITHUB_RELEASE: https://github.com/281677160/build-openwrt/releases
+  GITHUB_RELEASE: https://github.com/gxnas/GXNAS-AutoBuild-OpenWrt/releases
 
 jobs: 
   build:
@@ -43,7 +55,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_x86_64]
+        target: [Lede_x86_64_gxnas,Lede_x86_64_wjq,Lede_x86_64_soot,Lede_x86_64_all]
 
      # [Lede_x86_64,Lede_gl_mt300n_v2,Lede_nanopi_r2s,Lede_nanopi_r4s,Lede_newifi_d2,p2w_r619ac_128m,Lede_phicomm_k2p,Lede_phicomm_n1,Lede_redmi_ac2100,Lede_wankeyun,Lede_wndr3800,Lede_wndr4300_v1,Lede_wr703n_v1,Lede_xiaomi_r3pro,Lede_xiaoyu_c5,Lede_Raspberry_Pi4]
      
@@ -53,7 +65,7 @@ jobs:
      
      # [openwrt] 
      
-     # 除了编译【openwrt】机型外，其他机型都直接打入了常用插件了，不需要自己再拉取插件，除非我的插件包跟源码自带的都没有，你就自己添加吧，说明的《各种命令的简单介绍》有教程。
+     # 除了编译【openwrt】机型外，其他机型都直接打入了常用插件了，不需要自己再拉取插件，除非我的插件包跟源码自带的都没有，你就自己添加吧。
      # 选择编译【openwrt】纯天然不经任何修改的，增加插件可以在diy-1.sh增加，也可在settings.ini里修改成你想要编译的源码跟分支。
      # 选择【Lede_phicomm_n1或Project_phicomm_n1】的机型文件夹编译的话，会自动编译出（ N1、微加云、贝壳云、我家云、S9xxx ）固件。
 
@@ -107,6 +119,7 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         cd openwrt
         if [ ${{matrix.target}} != openwrt ]; then
+          sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
           rm -rf package/lienol/luci-app-timecontrol
           rm -rf package/ntlf9t/{smartdns,luci-app-smartdns}
           rm -rf package/ctcgfw/{luci-app-argon-config,luci-theme-argonv3}
@@ -240,11 +253,12 @@ jobs:
         fi
         cd openwrt/bin/targets/*/*
         rm -rf packages && mkdir packages
-        find -name "*buildinfo*" | xargs -i mv -f {} packages
-        find -name "*sha256sums*" | xargs -i mv -f {} packages
-        find -name "*manifest*" | xargs -i mv -f {} packages
-        find -name "*vmlinuz*" | xargs -i mv -f {} packages
-        find -name "*Image*" | xargs -i mv -f {} packages
+        # find -name "*buildinfo*" | xargs -i mv -f {} packages
+        # find -name "*sha256sums*" | xargs -i mv -f {} packages
+        # find -name "*manifest*" | xargs -i mv -f {} packages
+        # find -name "*vmlinuz*" | xargs -i mv -f {} packages
+        # find -name "*Image*" | xargs -i mv -f {} packages
+        rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
