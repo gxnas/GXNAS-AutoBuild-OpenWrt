@@ -250,7 +250,7 @@ jobs:
         # find -name "*vmlinuz*" | xargs -i mv -f {} packages
         # find -name "*Image*" | xargs -i mv -f {} packages
         rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
-        mv openwrt-x86-64-generic-squashfs-combined.img openwrt-x64-全功能版-${{ env.date }}.img
+        mv openwrt-x86-64-generic-squashfs-combined.img openwrt-${{matrix.target}}-${{ env.date }}.img
         gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
@@ -260,14 +260,14 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
-        name: openwrt-x64-全功能版-${{ env.date }}.config
+        name: openwrt-${{matrix.target}}-${{ env.date }}.config
         path: ./config
 
     - name: 上传固件在github空间
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
-        name: openwrt-x64-${{matrix.target}}-${{ env.date }}
+        name: openwrt-${{matrix.target}}-${{ env.date }}
         path: ${{ env.FIRMWARE }}
 
     - name: 上传固件到「奶牛快传」和「WeTransfer」
