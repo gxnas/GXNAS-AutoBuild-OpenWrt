@@ -22,8 +22,8 @@ on:
         required: false
         default: 'true'           #删除旧的发布（true=开启）（false=关闭）
 
-#  schedule:
-#    - cron: 0 8 */5 * *
+  schedule:
+    - cron: 0 0 * * 6
 
 jobs:
   del_runs:
