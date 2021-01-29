@@ -296,7 +296,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
-        name: openwrt-x64-主路由推荐版-${{ env.date }}
+        name: openwrt-x64-${{matrix.target}}-${{ env.date }}
         tag_name: openwrt-x64-主路由推荐版-${{ env.date }}
         body: |            
             ☆  源码 : ${{ env.REPO_URL }}
