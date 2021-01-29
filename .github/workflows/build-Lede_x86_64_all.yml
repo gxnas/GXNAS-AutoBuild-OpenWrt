@@ -5,20 +5,11 @@
 # Copyright (C) 2019 P3TERX <https://p3terx.com>
 # <https://github.com/P3TERX/Actions-OpenWrt.git>
 #
-name: 编译OpenWrt固件
+name: 编译OpenWrt-Lede_x86_64_all固件
 on: 
-  release:
-    types: [published]
-
-  push:
-    branches: 
-      - master
-    paths:
-      - '.github/workflows/build-openwrt.yml'
-
   #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
   schedule:
-    - cron: 0 7 * * 6
+    - cron: 0 4 * * 6
   
   watch:
     types: [started]
@@ -55,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_x86_64_gxnas,Lede_x86_64_wjq,Lede_x86_64_soot,Lede_x86_64_all]
+        target: [Lede_x86_64_all]
 
      # [Lede_x86_64,Lede_gl_mt300n_v2,Lede_nanopi_r2s,Lede_nanopi_r4s,Lede_newifi_d2,p2w_r619ac_128m,Lede_phicomm_k2p,Lede_phicomm_n1,Lede_redmi_ac2100,Lede_wankeyun,Lede_wndr3800,Lede_wndr4300_v1,Lede_wr703n_v1,Lede_xiaomi_r3pro,Lede_xiaoyu_c5,Lede_Raspberry_Pi4]
      
