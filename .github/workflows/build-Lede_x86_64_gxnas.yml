@@ -265,7 +265,7 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
-        name: openwrt-x64-${{matrix.target}}-${{ env.date }}
+        name: openwrt-${{matrix.target}}-${{ env.date }}
         path: ${{ env.FIRMWARE }}
 
     - name: 上传固件到「奶牛快传」和「WeTransfer」
@@ -294,8 +294,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
-        name: openwrt-x64-${{matrix.target}}-${{ env.date }}
-        tag_name: openwrt-x64-博主自用旁路由版-${{ env.date }}
+        name: openwrt-${{matrix.target}}-${{ env.date }}
+        tag_name: openwrt-博主自用旁路由版-${{ env.date }}
         body: |            
             ☆  源码 : ${{ env.REPO_URL }}
             ☆  分支 : ${{ env.REPO_BRANCH }}
