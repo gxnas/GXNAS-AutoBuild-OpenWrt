@@ -260,7 +260,7 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
-        name: .config-${{matrix.target}}_${{ env.date }}
+        name: .config-${{matrix.target}}-${{ env.date }}
         path: ./config
 
     - name: 上传固件在github空间
@@ -296,7 +296,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
-        name: ${{ env.date1 }} 「 ${{matrix.target}} 」固件
+        name: openwrt-x64-${{matrix.target}}-${{ env.date }}
         tag_name: ${{matrix.target}}-${{ env.date2 }}
         body: |            
             ☆  源码 : ${{ env.REPO_URL }}
