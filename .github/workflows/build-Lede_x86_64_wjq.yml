@@ -5,7 +5,7 @@
 # Copyright (C) 2019 P3TERX <https://p3terx.com>
 # <https://github.com/P3TERX/Actions-OpenWrt.git>
 #
-name: 编译OpenWrt-Lede_x86_64_wjq固件
+name: 编译【openwrt-x64-主路由推荐版】固件
 on: 
   #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
   schedule:
@@ -87,7 +87,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 主人${{ env.WXFB_MESSAGE }}编译开始啦
-        desp: 主人您要编译的[${{matrix.target}}]固件正在努力耕耘中,请耐心等待......
+        desp: 主人您要编译的【openwrt-x64-主路由推荐版-[${{matrix.target}}]】固件正在努力耕耘中,请耐心等待......
     
     - name: 开始安装编译所需系统
       env:
@@ -101,6 +101,7 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+    
     - name: 下载${{matrix.target}}源码
       working-directory: /workdir
       run: |
@@ -205,6 +206,7 @@ jobs:
          grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > NAME1
          [ -s NAME1 ] && echo "NAME1=$(cat NAME1)" >> $GITHUB_ENV
         fi
+    
     - name: 上传bin文件夹(固件+ipk)在github空间
       uses: actions/upload-artifact@v2
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -248,6 +250,7 @@ jobs:
         # find -name "*vmlinuz*" | xargs -i mv -f {} packages
         # find -name "*Image*" | xargs -i mv -f {} packages
         rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
+        mv openwrt-x86-64-generic-squashfs-combined.img openwrt-x64-主路由推荐版-${{ env.date }}.img
         gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
@@ -257,14 +260,14 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
-        name: .config-${{matrix.target}}_${{ env.date }}
+        name: openwrt-x64-主路由推荐版-${{ env.date }}.config
         path: ./config
 
     - name: 上传固件在github空间
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
-        name: OpenWrt-${{matrix.target}}-${{ env.date }}
+        name: openwrt-x64-主路由推荐版-${{ env.date }}
         path: ${{ env.FIRMWARE }}
 
     - name: 上传固件到「奶牛快传」和「WeTransfer」
@@ -293,8 +296,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
-        name: ${{ env.date1 }} 「 ${{matrix.target}} 」固件
-        tag_name: ${{matrix.target}}-${{ env.date2 }}
+        name: openwrt-x64-主路由推荐版-${{ env.date }}
+        tag_name: openwrt-x64-主路由推荐版-${{ env.date }}
         body: |            
             ☆  源码 : ${{ env.REPO_URL }}
             ☆  分支 : ${{ env.REPO_BRANCH }}
@@ -315,7 +318,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 恭喜主人${{ env.WXFB_MESSAGE }}固件编译成功！
-        desp: 我亲爱的主人您要编译的[ ${{matrix.target}} ]固件顺利编译完成了！
+        desp: 我亲爱的主人您要编译的【openwrt-x64-主路由推荐版-${{ env.date }}】固件顺利编译完成了！
               
               
               完成时间：${{ env.date1 }}
