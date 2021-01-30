@@ -11,8 +11,8 @@ on:
   #schedule:
     #- cron: 0 4 * * 5
   
-  watch:
-    types: [started]
+  #watch:
+    #types: [started]
 
   workflow_dispatch:
     inputs:
