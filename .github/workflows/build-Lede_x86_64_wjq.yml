@@ -5,7 +5,7 @@
 # Copyright (C) 2019 P3TERX <https://p3terx.com>
 # <https://github.com/P3TERX/Actions-OpenWrt.git>
 #
-name: 编译【openwrt-x64-主路由推荐版】固件
+name: 单独编译【openwrt-x64-主路由推荐版】固件
 on: 
   #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
   #schedule:
