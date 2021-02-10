@@ -205,6 +205,7 @@ jobs:
          grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > NAME1
          [ -s NAME1 ] && echo "NAME1=$(cat NAME1)" >> $GITHUB_ENV
         fi
+    
     - name: 上传bin文件夹(固件+ipk)在github空间
       uses: actions/upload-artifact@v2
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -247,8 +248,8 @@ jobs:
         # find -name "*manifest*" | xargs -i mv -f {} packages
         # find -name "*vmlinuz*" | xargs -i mv -f {} packages
         # find -name "*Image*" | xargs -i mv -f {} packages
-        rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
-        mv openwrt-x86-64-generic-squashfs-combined.img openwrt-${{matrix.target}}-${{ env.date }}.img
+        rm -rf `ls | grep -v "openwrt-at91-sama5-microchip_sama5d3-xplained-ext4-sdcard.img"`
+        mv openwrt-at91-sama5-microchip_sama5d3-xplained-ext4-sdcard.img openwrt-${{matrix.target}}-${{ env.date }}.img
         gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
