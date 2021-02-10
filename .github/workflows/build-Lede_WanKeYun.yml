@@ -250,7 +250,7 @@ jobs:
         find -name "*Image*" | xargs -i mv -f {} packages
         # rm -rf `ls | grep -v "openwrt-at91-sama5-microchip_sama5d3-xplained-ext4-sdcard.img"`
         # mv openwrt-at91-sama5-microchip_sama5d3-xplained-ext4-sdcard.img openwrt-${{matrix.target}}-${{ env.date }}.img
-        gzip *.img
+        # gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
