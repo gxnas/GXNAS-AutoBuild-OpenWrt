@@ -14,4 +14,9 @@
 # 软件包地址：https://github.com/281677160/openwrt-package
 sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+
+#新版去广告插件
 svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/luci-app-godproxy package/diy/luci-app-godproxy
+
+#内网测速插件
+src-git NetSpeedTest  https://github.com/sirpdboy/NetSpeedTest
