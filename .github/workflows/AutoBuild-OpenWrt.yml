@@ -8,11 +8,11 @@
 name: 同时编译OpenWrt-Lede_x86_64【gxnas、wjq、soot、all】四个固件
 on: 
   #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
-  schedule:
-    - cron: 0 8 * * 5
+  #schedule:
+    #- cron: 0 4 * * 5
   
-  watch:
-    types: [started]
+  #watch:
+    #types: [started]
 
   workflow_dispatch:
     inputs:
@@ -101,8 +101,7 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-    
-    - name: 下载${{matrix.target}}源码
+    - name: 下载"${{matrix.target}}"源码
       working-directory: /workdir
       run: |
         df -hT $PWD
@@ -170,7 +169,6 @@ jobs:
           echo "Compile_Date=$(date +%Y%m%d-%H%M)" > $GITHUB_WORKSPACE/Openwrt.info
           source $GITHUB_WORKSPACE/build/${{matrix.target}}/diy-3.sh && Diy_Part1
         fi
-
     - name: SSH远程连接（若打开了此功能,在此转圈2分钟还展开不了,请看《SSH连接教程》）
       uses: 281677160/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
@@ -213,7 +211,6 @@ jobs:
           grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > NAME1
           [ -s NAME1 ] && echo "NAME1=$(cat NAME1)" >> $GITHUB_ENV
         fi
-    
     - name: 上传bin文件夹(固件+ipk)在github空间
       uses: actions/upload-artifact@v2
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -319,7 +316,7 @@ jobs:
             
             🌴 链接有效期为7天，无需注册直接下载 🐤
         files: ${{ env.FIRMWARE }}/*
- 
+
     - name: 发布定时升级云端地址
       uses: softprops/action-gh-release@v1
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
