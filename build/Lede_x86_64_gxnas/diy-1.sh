@@ -21,6 +21,8 @@ svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/l
 #新版出国插件
 svn export --force https://github.com/garypang13/luci-app-bypass package/diy/luci-app-bypass
 svn export --force https://github.com/garypang13/openwrt-packages/tree/master/lua-maxminddb package/diy/lua-maxminddb
+find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
+find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
 
 #内网测速插件
 svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeedtest
