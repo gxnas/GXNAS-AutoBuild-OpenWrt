@@ -14,3 +14,6 @@
 # 软件包地址：https://github.com/281677160/openwrt-package
 sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+
+# 添加京东脚本
+git clone  https://github.com/ITdesk01/jd_openwrt_script.git package/jd_openwrt_script
