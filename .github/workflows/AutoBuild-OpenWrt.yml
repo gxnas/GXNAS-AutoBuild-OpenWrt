@@ -277,7 +277,7 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
-        name: openwrt-${{ env.NAME2 }}_${{ env.NAME1 }}_${{ env.date }}.config
+        name: OpenWrt-${{ env.NAME2 }}-${{ env.NAME1 }}-${{matrix.target}}-${{ env.date }}.config
         path: openwrt/bin/config
 
     - name: 上传固件在github空间
