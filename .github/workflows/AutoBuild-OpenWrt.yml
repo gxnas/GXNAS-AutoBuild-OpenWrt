@@ -88,8 +88,8 @@ jobs:
       if: env.SERVERCHAN_SCKEY == 'true'
       with:
         SCKEY: ${{ secrets.SCKEY }}
-        text: 主人"${{ env.WXFB_MESSAGE }}"编译开始啦
-        desp: 主人您要编译的【openwrt-x64-["${{matrix.target}}"]】固件正在努力耕耘中,请耐心等待......
+        text: 【openwrt-x64-["${{matrix.target}}"]】固件开始编译啦
+        desp: 主人：您要编译的【openwrt-x64-["${{matrix.target}}"]】固件正在努力编译中，请耐心等待......
     
     - name: 开始安装编译所需系统
       env:
