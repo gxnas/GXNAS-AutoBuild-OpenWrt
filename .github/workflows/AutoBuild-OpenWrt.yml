@@ -284,7 +284,7 @@ jobs:
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
-        name: OpenWrt-${{ env.NAME2 }}-${{ env.NAME1 }}-firmware-${{ env.date }}
+        name: OpenWrt-${{ env.NAME2 }}-${{ env.NAME1 }}-${{matrix.target}}-${{ env.date }}
         path: ${{ env.FIRMWARE }}
 
     - name: 上传固件到「奶牛快传」和「WeTransfer」
@@ -320,7 +320,7 @@ jobs:
       uses: ncipollo/release-action@v1
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       with:
-        name: ${{ env.NAME2 }}-${{ env.NAME1 }}(#${{github.run_number}})
+        name: ${{ env.NAME2 }}-${{ env.NAME1 }}-${{matrix.target}}(#${{github.run_number}})
         tag: ${{ env.date2 }}
         token: ${{ secrets.REPO_TOKEN }}
         bodyFile: "update_log.txt"
@@ -331,7 +331,7 @@ jobs:
       if: steps.organizer.outputs.status == 'success' && env.SERVERCHAN_SCKEY == 'true'
       with:
         SCKEY: ${{ secrets.SCKEY }}
-        text: 恭喜主人${{ env.NAME2 }}_${{ env.NAME1 }}固件编译成功！
-        desp: 我亲爱的主人您使用${{matrix.target}}文件夹编译的[ ${{ env.NAME2 }}-${{ env.NAME1 }} ]固件(#${{github.run_number}})顺利编译完成了！
+        text: 恭喜主人【${{ env.NAME2 }}_${{ env.NAME1 }}_${{matrix.target}}】固件编译成功！
+        desp: 我亲爱的主人您使用${{matrix.target}}文件夹编译的【${{ env.NAME2 }}_${{ env.NAME1 }}_${{matrix.target}}】固件(编译作业流程：#${{github.run_number}})顺利编译完成了！
         #desp: 我亲爱的主人您要编译的【openwrt-x64-${{matrix.target}}-${{ env.date }}】固件顺利编译完成了！
 
