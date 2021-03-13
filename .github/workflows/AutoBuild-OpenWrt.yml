@@ -311,7 +311,7 @@ jobs:
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       with:
         name: OpenWrt-${{matrix.target}}
-        tag: ${{ env.date2 }}
+        tag: OpenWrt-${{matrix.target}}
         token: ${{ secrets.REPO_TOKEN }}
         bodyFile: "update_log.txt"
         artifacts: "${{ env.FIRMWARE }}/*"
