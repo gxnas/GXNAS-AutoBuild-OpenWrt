@@ -8,8 +8,8 @@
 name: 单独编译【openwrt-x64-全功能版】固件
 on: 
   #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
-  schedule:
-    - cron: 0 4 * * 5
+  #schedule:
+    #- cron: 0 4 * * 5
   
   workflow_dispatch:
     inputs:
@@ -17,6 +17,7 @@ on:
         description: 'SSH远程'
         required: false
         default: 'ssh-actions'
+
 env:
   LEDE: https://github.com/coolsnowwolf/lede
   LIENOL: https://github.com/Lienol/openwrt
@@ -50,7 +51,7 @@ jobs:
     steps:
     - name: 准备结束
       uses: actions/checkout@v2
-    
+
     - name: 检测脚本设置
       run: |
         source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
@@ -78,7 +79,7 @@ jobs:
         SCKEY: ${{ secrets.SCKEY }}
         text: 【"${{matrix.target}}"】固件开始编译啦
         desp: 主人：您要编译的【"${{matrix.target}}"】固件正在努力编译中，请耐心等待......
-     
+
     - name: 设置编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -92,7 +93,6 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-    
     - name: 下载"${{matrix.target}}"源码
       working-directory: /workdir
       run: |
@@ -101,7 +101,6 @@ jobs:
         echo "Home=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
         echo "PATH1=${GITHUB_WORKSPACE}/openwrt/build/${{matrix.target}}" >> $GITHUB_ENV
         echo "artifact=${GITHUB_WORKSPACE}/openwrt/bin/Firmware" >> $GITHUB_ENV
-    
     - name: 调整脚本文件
       run: |
         git clone -b main https://github.com/281677160/Custom "${GITHUB_WORKSPACE}/build/common"
@@ -113,7 +112,6 @@ jobs:
         if [[ "${{ github.event.inputs.ssh }}" == 'ssh' ]]; then
           echo "SSHYC=true" >> $GITHUB_ENV
         fi
-    
     - name: 公告
       run: |
         cd openwrt
@@ -157,14 +155,13 @@ jobs:
           echo "Compile_Date=$(date +%Y%m%d%H%M)" > $GITHUB_WORKSPACE/Openwrt.info
           source "${PATH1}/upgrade.sh" && Diy_Part1
         fi
-    
     - name: SSH远程连接（若打开了此功能,在此转圈2分钟还展开不了,请看《SSH连接教程》）
       uses: 281677160/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh' && github.event.inputs.ssh  != 'false')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-    
+
     - name: 为编译做最后处理
       run: |
         cd openwrt
@@ -174,13 +171,11 @@ jobs:
         if [ "${REGULAR_UPDATE}" == "true" ]; then
           source "${PATH1}/upgrade.sh" && Diy_Part2
         fi
-    
     - name: 编译信息
       run: |
         cd openwrt
         source "${PATH1}/upgrade.sh"
         source "${PATH1}/common.sh" && Diy_xinxi
-    
     - name: 下载软件包
       id: package
       run: |
@@ -230,7 +225,6 @@ jobs:
            cd ../../
            mv -f reform/out/*/*.img.gz openwrt/bin/targets/armvirt/*
         fi
-    
     - name: 整理固件文件夹
       id: organizer
       run: |
@@ -257,7 +251,6 @@ jobs:
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "BOT=TRUE" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-    
     - name: 上传.config配置文件在github actions
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
@@ -289,7 +282,7 @@ jobs:
         name: 定时升级云端地址
         tag_name: update_Firmware
         files: ${{ env.artifact }}/*
-    
+
     - name: 整理发布信息
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       run: |
@@ -299,17 +292,16 @@ jobs:
         echo "##### 奶牛快传：$(cat cowtransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "##### WETRANSFER：$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
-    
     - name: 发布固件
       uses: ncipollo/release-action@v1
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       with:
-        name: ${{ env.NAME2 }}-${{ env.NAME1 }}
-        tag: ${{ env.date2 }}
+        name: OpenWrt-${{matrix.target}}
+        tag: OpenWrt-${{matrix.target}}
         token: ${{ secrets.REPO_TOKEN }}
         bodyFile: "update_log.txt"
         artifacts: "${{ env.FIRMWARE }}/*"
-    
+
     - name: 微信通知
       uses: emon100/Action-Serverchan@v2
       if: steps.organizer.outputs.status == 'success' && env.SERVERCHAN_SCKEY == 'true'
