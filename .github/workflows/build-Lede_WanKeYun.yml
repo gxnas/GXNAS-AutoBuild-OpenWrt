@@ -8,8 +8,8 @@
 name: 单独编译【openwrt-玩客云】固件
 on: 
   #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
-  schedule:
-    - cron: 0 4 * * 5
+  #schedule:
+    #- cron: 0 4 * * 5
   
   workflow_dispatch:
     inputs:
@@ -297,7 +297,7 @@ jobs:
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       with:
         name: OpenWrt-${{matrix.target}}
-        tag: ${{ env.date2 }}
+        tag: OpenWrt-${{matrix.target}}
         token: ${{ secrets.REPO_TOKEN }}
         bodyFile: "update_log.txt"
         artifacts: "${{ env.FIRMWARE }}/*"
