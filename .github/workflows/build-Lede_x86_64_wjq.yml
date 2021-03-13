@@ -6,42 +6,31 @@
 # <https://github.com/P3TERX/Actions-OpenWrt.git>
 #
 name: 单独编译【openwrt-x64-主路由推荐版】固件
-on: 
-  #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
-  #schedule:
-    #- cron: 0 4 * * 5
-  
-  #watch:
-    #types: [started]
-
+on:
   workflow_dispatch:
     inputs:
       ssh:
         description: 'SSH远程'
         required: false
         default: 'ssh-actions'
-      wxtz:
-        description: '微信通知'
-        required: false
-        default: 'wxtz-actions'
-      release:
-        description: '发布固件'
-        required: false
-        default: 'release-actions'
 
-env: 
+#定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
+  schedule:
+    - cron: 0 4 * * 5
+
+env:
   LEDE: https://github.com/coolsnowwolf/lede
   LIENOL: https://github.com/Lienol/openwrt
   PROJECT: https://github.com/immortalwrt/immortalwrt
   GITURL: https://github.com/${{github.repository}}
   TZ: Asia/Shanghai
 
-jobs: 
+jobs:
   build:
-    runs-on: Ubuntu-20.04
+    runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
 
-    name: 编译 ${{matrix.target}}
+    name: 编译 "${{matrix.target}}"
     strategy:
       fail-fast: false
       matrix:
@@ -57,6 +46,7 @@ jobs:
      # 各个源码都直接打入了常用插件了，不需要自己再拉取插件，除非我的插件包跟源码自带的都没有，你就自己添加吧，说明的《各种命令的简单介绍》有教程。
      # 选择【Lede_phicomm_n1或Project_phicomm_n1】的机型文件夹编译的话，会自动编译出（ N1、微加云、贝壳云、我家云、S9xxx ）固件。
      # [Lede_opewrt,Lienol_opewrt,Project_opewrt] 分别为三个源码的公共文件,你没找到你要编译的机型就使用各源码的公共文件夹来编译就可以了。
+
 
     steps:
     - name: 准备结束
@@ -82,16 +72,15 @@ jobs:
         echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
         echo "Updete_firmware=${Updete_firmware}" >> $GITHUB_ENV
         echo "Extension=${Extension}" >> $GITHUB_ENV
-    
     - name: 微信通知
       uses: emon100/Action-Serverchan@v2
       if: env.SERVERCHAN_SCKEY == 'true'
       with:
         SCKEY: ${{ secrets.SCKEY }}
-        text: 【openwrt-x64-["${{matrix.target}}"]】固件开始编译啦
-        desp: 主人：您要编译的【openwrt-x64-["${{matrix.target}}"]】固件正在努力编译中，请耐心等待......
-    
-    - name: 开始安装编译所需系统
+        text: 【"${{matrix.target}}"】固件开始编译啦
+        desp: 主人：您要编译的【"${{matrix.target}}"】固件正在努力编译中，请耐心等待......
+     
+    - name: 设置编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -126,12 +115,11 @@ jobs:
           echo "SSHYC=true" >> $GITHUB_ENV
         fi
     
-    - name: 公告（每次启动都读取最新内容，展开可以查看）
+    - name: 公告
       run: |
         cd openwrt
         source "${PATH1}/common.sh" && Diy_notice
-        
-    - name: 加载源,patch补丁和自定义设置
+    - name: 加载源、patches、files、diy和自定义
       run: |
         cd openwrt
         source "${PATH1}/common.sh" && Diy_all
@@ -177,7 +165,7 @@ jobs:
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-
+    
     - name: 为编译做最后处理
       run: |
         cd openwrt
@@ -193,6 +181,7 @@ jobs:
         cd openwrt
         source "${PATH1}/upgrade.sh"
         source "${PATH1}/common.sh" && Diy_xinxi
+    
     - name: 下载软件包
       id: package
       run: |
@@ -200,7 +189,6 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-    
     - name: 开始编译固件
       id: compile
       run: |
@@ -220,19 +208,18 @@ jobs:
          grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > NAME1
          [ -s NAME1 ] && echo "NAME1=$(cat NAME1)" >> $GITHUB_ENV
         fi
-    
-    - name: 上传bin文件夹(固件+ipk)在github空间
+    - name: 上传bin文件夹(固件+ipk)在github actions
       uses: actions/upload-artifact@v2
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: OpenWrt-bin-${{ env.NAME2 }}${{ env.NAME1 }}_${{ env.date }}
+        name: Bin_filename+ipk_${{ env.NAME2 }}_${{ env.NAME1 }}_${{ env.date }}
         path: openwrt/bin
 
     - name: 编译N1机型时,打包（N1、微加云、贝壳云、我家云、S9xxx）固件
       run: |
         cd openwrt
         if [[ ${{matrix.target}} =~ (Lede_phicomm_n1|Project_phicomm_n1) ]]; then
-          source common/common.sh && Diy_n1
+          source "${PATH1}/common.sh" && Diy_n1
          cd out
          for x in ${devices[*]}; do
            cd $x
@@ -249,12 +236,12 @@ jobs:
       id: organizer
       run: |
         cd openwrt
-        if [ "${REGULAR_UPDATE}" == "true" ]; then
+        if [[ "${REGULAR_UPDATE}" == "true" ]]; then
           source "${PATH1}/upgrade.sh" && Diy_Part3
         fi
         mkdir bin/config
         find bin/targets/ -name "*config.buildinfo*" | xargs -i mv -f {} bin/config
-        if [ -n "$(ls -A "openwrt/bin/targets/x86" 2>/dev/null)" ]; then
+        if [ -n "$(ls -A "bin/targets/x86" 2>/dev/null)" ]; then
           find bin/targets/x86/* -name "*kernel*" | xargs -i mv -f {} bin/targets
         fi
         cd bin/targets/*/*
@@ -272,18 +259,18 @@ jobs:
         echo "BOT=TRUE" >> $GITHUB_ENV
         echo "::set-output name=status::success"
     
-    - name: 上传.config配置文件在github空间
+    - name: 上传.config配置文件在github actions
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
-        name: OpenWrt-${{ env.NAME2 }}-${{ env.NAME1 }}-${{matrix.target}}-${{ env.date }}.config
+        name: OpenWrt-${{matrix.target}}-${{ env.date }}.config
         path: openwrt/bin/config
 
-    - name: 上传固件在github空间
+    - name: 上传固件在github actions
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
-        name: OpenWrt-${{ env.NAME2 }}-${{ env.NAME1 }}-${{matrix.target}}-${{ env.date }}
+        name: OpenWrt-${{matrix.target}}-${{ env.date }}
         path: ${{ env.FIRMWARE }}
 
     - name: 上传固件到「奶牛快传」和「WeTransfer」
@@ -294,7 +281,6 @@ jobs:
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-    
     - name: 把定时更新固件发布到云端
       uses: softprops/action-gh-release@v1
       if: steps.organizer.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
@@ -308,7 +294,7 @@ jobs:
     - name: 整理发布信息
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       run: |
-        echo "### 发布于$(date +"%Y年%m月%d号-%H点%M分")" > update_log.txt
+        echo "### (#${{github.run_number}})$(date +"%Y年%m月%d号-%H点%M分")" > update_log.txt
         curl -fsSL git.io/file-transfer | sh
         ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
         echo "##### 奶牛快传：$(cat cowtransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
@@ -319,7 +305,7 @@ jobs:
       uses: ncipollo/release-action@v1
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       with:
-        name: ${{ env.NAME2 }}-${{ env.NAME1 }}-${{matrix.target}}(#${{github.run_number}})
+        name: ${{ env.NAME2 }}-${{ env.NAME1 }}
         tag: ${{ env.date2 }}
         token: ${{ secrets.REPO_TOKEN }}
         bodyFile: "update_log.txt"
@@ -330,6 +316,5 @@ jobs:
       if: steps.organizer.outputs.status == 'success' && env.SERVERCHAN_SCKEY == 'true'
       with:
         SCKEY: ${{ secrets.SCKEY }}
-        text: 恭喜主人【${{ env.NAME2 }}_${{ env.NAME1 }}_${{matrix.target}}】固件编译成功！
-        desp: 我亲爱的主人您使用${{matrix.target}}文件夹编译的【${{ env.NAME2 }}_${{ env.NAME1 }}_${{matrix.target}}】固件(编译作业流程：#${{github.run_number}})顺利编译完成了！
-        #desp: 我亲爱的主人您要编译的【openwrt-x64-${{matrix.target}}-${{ env.date }}】固件顺利编译完成了！
+        text: 恭喜主人【${{matrix.target}}】固件编译成功！
+        desp: 我亲爱的主人【${{matrix.target}}】固件(编译作业流程：#${{github.run_number}})顺利编译完成了！
