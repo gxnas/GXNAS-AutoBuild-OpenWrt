@@ -121,7 +121,7 @@ jobs:
         cd openwrt
         source "${PATH1}/common.sh" && Diy_notice
 
-	- name: 加载源、patches、files、diy和自定义
+    - name: 加载源、patches、files、diy和自定义
       run: |
         cd openwrt
         source "${PATH1}/common.sh" && Diy_all
@@ -192,7 +192,7 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-	- name: 开始编译固件
+    - name: 开始编译固件
       id: compile
       run: |
         cd openwrt
@@ -212,7 +212,7 @@ jobs:
          [ -s NAME1 ] && echo "NAME1=$(cat NAME1)" >> $GITHUB_ENV
         fi
 
-	- name: 上传bin文件夹(固件+ipk)在github actions
+    - name: 上传bin文件夹(固件+ipk)在github actions
       uses: actions/upload-artifact@v2
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
@@ -286,7 +286,7 @@ jobs:
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
 
-	- name: 把定时更新固件发布到云端
+    - name: 把定时更新固件发布到云端
       uses: softprops/action-gh-release@v1
       if: steps.organizer.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       env:
