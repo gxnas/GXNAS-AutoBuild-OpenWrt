@@ -9,7 +9,7 @@
 # 下面的开关控制，仅在手动按钮启动时候生效，定时启动的话默认全开
 
 
-name: 删除github空间的老固件和自动发布的老固件
+name: delete
 on:
   workflow_dispatch:
     inputs:
@@ -22,8 +22,8 @@ on:
         required: false
         default: 'true'           #删除旧的发布（true=开启）（false=关闭）
 
-  schedule:
-    - cron: 0 0 * * 5
+#  schedule:
+#    - cron: 0 8 */5 * *
 
 jobs:
   del_runs:
@@ -38,7 +38,7 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ github.repository }}       
           retain_days: 15
-          #keep_minimum_runs: 0
+          keep_minimum_runs: 0
     
       - name: 删除自动发布的老固件
         uses: dev-drprasad/delete-older-releases@v0.1.0
