@@ -6,18 +6,17 @@
 # <https://github.com/P3TERX/Actions-OpenWrt.git>
 #
 name: 单独编译【openwrt-x64-博主自用旁路由版】固件
-on:
+on: 
+  #定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
+  schedule:
+    - cron: 0 4 * * 5
+  
   workflow_dispatch:
     inputs:
       ssh:
         description: 'SSH远程'
         required: false
         default: 'ssh-actions'
-
-#定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
-  schedule:
-    - cron: 0 4 * * 5
-
 env:
   LEDE: https://github.com/coolsnowwolf/lede
   LIENOL: https://github.com/Lienol/openwrt
