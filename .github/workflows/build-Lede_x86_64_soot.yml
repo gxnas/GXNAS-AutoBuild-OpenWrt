@@ -193,6 +193,7 @@ jobs:
         cd openwrt
         source "${PATH1}/upgrade.sh"
         source "${PATH1}/common.sh" && Diy_xinxi
+    
     - name: 下载软件包
       id: package
       run: |
@@ -332,6 +333,4 @@ jobs:
         SCKEY: ${{ secrets.SCKEY }}
         text: 恭喜主人【${{ env.NAME2 }}_${{ env.NAME1 }}_${{matrix.target}}】固件编译成功！
         desp: 我亲爱的主人您使用${{matrix.target}}文件夹编译的【${{ env.NAME2 }}_${{ env.NAME1 }}_${{matrix.target}}】固件(编译作业流程：#${{github.run_number}})顺利编译完成了！
-        #desp: 我亲爱的主人您要编译的【openwrt-x64-${{matrix.target}}-${{ env.date }}】固件顺利编译完成了！            
-              
-              祝小主人见人爱，花见花开，车见车载，天天好心情🎈！！！
+        #desp: 我亲爱的主人您要编译的【openwrt-x64-${{matrix.target}}-${{ env.date }}】固件顺利编译完成了！
