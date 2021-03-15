@@ -294,7 +294,8 @@ jobs:
       with:
         name: 定时升级云端地址
         tag_name: update_Firmware
-        files: ${{ env.artifact }}/*
+        files: OpenWrt-${{matrix.target}}-${{ env.date }}/*
+        #files: ${{ env.artifact }}/*
 
     - name: 整理发布信息
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
