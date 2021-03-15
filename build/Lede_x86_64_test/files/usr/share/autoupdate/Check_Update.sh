@@ -14,7 +14,7 @@ Firmware_COMP2="$(awk 'NR==6' /etc/openwrt_info)"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
 Author="${Github##*com/}"
-Github_Tags="https://api.github.com/repos/${Author}/releases/tags/Lede_x86_64_gxnas"
+Github_Tags="https://api.github.com/repos/${Author}/releases/tags/Lede_x86_64_test"
 wget -q ${Github_Tags} -O - > /tmp/Github_Tags
 Firmware_Type="$(awk 'NR==4' /etc/openwrt_info)"
 case ${CURRENT_DEVICE} in
