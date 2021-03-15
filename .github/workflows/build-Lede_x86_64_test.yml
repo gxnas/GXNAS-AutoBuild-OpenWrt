@@ -99,6 +99,18 @@ jobs:
       working-directory: /workdir
       run: |
         git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" "openwrt"
+        ##增加bypass
+        git clone https://github.com/garypang13/luci-app-bypass
+        svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
+        svn co https://github.com/garypang13/openwrt-packages/trunk/smartdns
+        svn co https://github.com/garypang13/openwrt-packages/trunk/chinadns-ng
+        svn co https://github.com/garypang13/openwrt-packages/trunk/trojan-go
+        svn co https://github.com/garypang13/openwrt-packages/trunk/trojan-plus
+        cd lede
+        find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
+        find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
+        ##结束
+
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         echo "Home=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
         echo "PATH1=${GITHUB_WORKSPACE}/openwrt/build/${{matrix.target}}" >> $GITHUB_ENV
