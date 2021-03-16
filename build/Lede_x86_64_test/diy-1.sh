@@ -22,12 +22,11 @@ svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/l
 svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeedtest
 
 #bypass插件
-#git clone https://github.com/garypang13/luci-app-bypass
-#svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
+git clone https://github.com/garypang13/luci-app-bypass
+svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
 #svn co https://github.com/garypang13/openwrt-packages/trunk/smartdns
 #svn co https://github.com/garypang13/openwrt-packages/trunk/chinadns-ng
 #svn co https://github.com/garypang13/openwrt-packages/trunk/trojan-go
 #svn co https://github.com/garypang13/openwrt-packages/trunk/trojan-plus
-#cd lede
-#find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
-#find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
+find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
+find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
