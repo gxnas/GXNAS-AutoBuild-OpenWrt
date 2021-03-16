@@ -20,3 +20,9 @@ svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/l
 
 # 添加京东脚本
 git clone  https://github.com/ITdesk01/jd_openwrt_script.git package/jd_openwrt_script
+
+#bypass插件
+git clone https://github.com/garypang13/luci-app-bypass
+svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
+find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
+find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
