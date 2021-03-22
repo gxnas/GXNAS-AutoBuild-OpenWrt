@@ -22,4 +22,4 @@ svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/l
 svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeedtest
 
 #bypass插件
-git clone https://github.com/linkease/ddnsto-openwrt
+svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
