@@ -26,3 +26,6 @@ svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeed
 #svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
 #find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
 #find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
+
+#DDNS.to内网穿透插件
+svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
