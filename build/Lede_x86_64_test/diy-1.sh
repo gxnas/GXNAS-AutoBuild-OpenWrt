@@ -23,3 +23,6 @@ svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeed
 
 #DDNS.to内网穿透插件
 svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
+
+#bypass插件
+git clone https://github.com/garypang13/luci-app-bypass.git
