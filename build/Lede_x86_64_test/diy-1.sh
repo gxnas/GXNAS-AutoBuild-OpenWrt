@@ -21,5 +21,5 @@ svn export --force https://github.com/project-lede/luci-app-godproxy package/diy
 #内网测速插件
 svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeedtest
 
-#bypass插件
+#DDNS.to内网穿透插件
 svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
