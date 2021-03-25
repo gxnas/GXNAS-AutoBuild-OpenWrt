@@ -281,6 +281,20 @@ jobs:
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
 
+    - name: 创建releases标签
+      id: tag
+      if: steps.organizer.outputs.status == 'success' && env.UPLOAD_TAGS == 'true'
+      run: |
+        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
+        touch release.txt
+        echo "编译文件夹：[Lede_x86_64_test](https://github.com/gxnas/GXNAS-AutoBuild-OpenWrt/tree/main/build/Lede_x86_64_test)" >> release.txt
+        echo "由衷感谢所有为openwrt无私奉献的大佬们" >> release.txt
+        echo "流程文件名：[build-Lede_x86_64_test.yml](https://github.com/gxnas/GXNAS-AutoBuild-OpenWrt/blob/main/.github/workflows/build-Lede_x86_64_test.yml)" >> release.txt
+        echo "本固件采用[Lean的Openwrt源码](https://github.com/coolsnowwolf/lede)编译" >> release.txt
+        echo "由衷感谢所有为openwrt无私奉献的大佬们" >> release.txt
+        echo "📥 固件下载在下方↓↓↓ （）" >> release.txt
+        echo "::set-output name=status::success"
+
     - name: 把定时更新固件发布到云端
       uses: softprops/action-gh-release@v1
       if: steps.organizer.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
