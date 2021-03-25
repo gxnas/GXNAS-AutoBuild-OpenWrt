@@ -18,9 +18,6 @@ sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf
 #新版去广告插件
 svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/luci-app-godproxy package/diy/luci-app-godproxy
 
-#内网测速插件
-svn export --force https://github.com/sirpdboy/NetSpeedTest package/diy/netspeedtest
-
 #bypass插件
 #git clone https://github.com/garypang13/luci-app-bypass
 #svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
