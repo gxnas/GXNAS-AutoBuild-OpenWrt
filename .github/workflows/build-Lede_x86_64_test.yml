@@ -302,10 +302,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:
-        name: 【openwrt-x64-博主自用旁路由版】固件定时升级云端地址
-        #tag_name: update_Firmware
-        tag_name: Lede_x86_64_gxnas
-        #files: OpenWrt-${{matrix.target}}-${{ env.date }}/*
+        name: 【openwrt-x64-测试版】固件定时升级云端地址
+        tag_name: Lede_x86_64_test
         files: ${{ env.artifact }}/*
 
     - name: 整理发布信息
