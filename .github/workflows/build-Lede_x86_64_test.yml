@@ -23,6 +23,9 @@ env:
   LIENOL: https://github.com/Lienol/openwrt
   PROJECT: https://github.com/immortalwrt/immortalwrt
   GITURL: https://github.com/${{github.repository}}
+  Author: ${{github.actor}}
+  Run_number: ${{github.run_number}}
+  Run_workflow: ${{github.workflow}}
   TZ: Asia/Shanghai
 
 jobs:
@@ -56,7 +59,8 @@ jobs:
       run: |
         source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
         echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
-        echo "Author=${{github.actor}}" >> $GITHUB_ENV
+        # echo "Author=${{github.actor}}" >> $GITHUB_ENV
+        echo "CangKu=${GITURL##*${Author}/}" >> $GITHUB_ENV
         echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
         echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
         echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
@@ -180,7 +184,7 @@ jobs:
         source "${PATH1}/upgrade.sh"
         source "${PATH1}/common.sh" && Diy_xinxi
 
-    - name: 下载软件包
+    - name: 下载DLL
       id: package
       run: |
         cd openwrt
@@ -208,7 +212,7 @@ jobs:
          [ -s NAME1 ] && echo "NAME1=$(cat NAME1)" >> $GITHUB_ENV
         fi
 
-    - name: 上传bin文件夹(固件+ipk)在github actions
+    - name: 上传bin文件夹(固件+ipk)到github actions空间
       uses: actions/upload-artifact@v2
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
@@ -259,14 +263,14 @@ jobs:
         echo "BOT=TRUE" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
-    - name: 上传.config配置文件在github actions
+    - name: 上传.config配置文件到github actions空间
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_CONFIG == 'true'
       with:
         name: OpenWrt-${{matrix.target}}-${{ env.date }}.config
         path: openwrt/bin/config
 
-    - name: 上传固件在github actions
+    - name: 上传固件到github actions空间
       uses: actions/upload-artifact@v2
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       with:
@@ -323,7 +327,8 @@ jobs:
         name: OpenWrt-${{matrix.target}}
         tag: OpenWrt-${{matrix.target}}
         token: ${{ secrets.REPO_TOKEN }}
-        bodyFile: "update_log.txt"
+        #bodyFile: "update_log.txt"
+        bodyFile: "release.txt"
         artifacts: "${{ env.FIRMWARE }}/*"
 
     - name: 微信通知
