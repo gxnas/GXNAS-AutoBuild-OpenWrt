@@ -115,11 +115,11 @@ x86-64)
 	Space_RQM=50
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
-Github_Download="${Github}/releases/download/Lede_x86_64_wjq"
+Github_Download="${Github}/releases/download/Lede_x86_64_soot"
 Apidz="${Github##*com/}"
 Author="${Apidz%/*}"
 Cangku="${Github##*${Author}/}"
-Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/Lede_x86_64_wjq"
+Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/Lede_x86_64_soot"
 cd /etc
 clear && echo "插件版本:	${Version}"
 if [[ -z "${Input_Option}" ]];then
