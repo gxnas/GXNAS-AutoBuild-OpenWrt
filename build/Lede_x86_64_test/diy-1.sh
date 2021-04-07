@@ -28,4 +28,4 @@ svn export --force https://github.com/linkease/ddnsto-openwrt package/network/se
 git clone https://github.com/garypang13/luci-app-bypass.git
 
 #内网测速插件
-git clone https://github.com/siropboy/sirpdboy-package package/sirpdboy-package
+git clone https://github.com/sirpdboy/NetSpeedTest package/NetSpeedTest
