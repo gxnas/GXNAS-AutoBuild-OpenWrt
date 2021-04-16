@@ -23,7 +23,7 @@ on:
         default: 'true'           #删除旧的发布（true=开启）（false=关闭）
 
   schedule:
-    - cron: 0 10 */5 * *
+    - cron: 0 10 * * 5
 
 jobs:
   del_runs:
@@ -36,8 +36,9 @@ jobs:
         if: (github.event.inputs.delete-older-workflow == 'true' && github.event.inputs.delete-older-workflow  != 'false')
         with:
           token: ${{ github.token }}
-          repository: ${{ github.repository }}       
-          retain_days: 7         #保留多少天不删除
+          repository: ${{ github.repository }} 
+          #保留7天不删除
+          retain_days: 7
           keep_minimum_runs: 0
     
       - name: 删除自动发布的老固件
