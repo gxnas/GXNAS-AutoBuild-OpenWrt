@@ -27,3 +27,6 @@ svn export --force https://github.com/linkease/ddnsto-openwrt package/network/se
 #HelloWorld和相关的依赖
 git clone https://github.com/jerrykuku/lua-maxminddb.git
 git clone https://github.com/jerrykuku/luci-app-vssr.git  
+
+#解除网易云音乐播放限制的 OpenWrt 插件
+git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
