@@ -16,10 +16,17 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 
 #新版去广告插件
-svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/luci-app-godproxy package/diy/luci-app-godproxy
+svn export --force https://github.com/project-lede/luci-app-godproxy package/diy/luci-app-godproxy
+
+#DDNS.to内网穿透插件
+svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
 
 #bypass插件
-#git clone https://github.com/garypang13/luci-app-bypass
-#svn co https://github.com/garypang13/openwrt-packages/trunk/lua-maxminddb
-#find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
-#find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
+#git clone https://github.com/garypang13/luci-app-bypass.git
+
+#HelloWorld和相关的依赖
+git clone https://github.com/jerrykuku/lua-maxminddb.git
+git clone https://github.com/jerrykuku/luci-app-vssr.git  
+
+#解除网易云音乐播放限制的 OpenWrt 插件
+git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
