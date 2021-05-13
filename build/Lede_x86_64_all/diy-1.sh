@@ -26,3 +26,6 @@ svn export --force https://github.com/project-lede/openwrt-app/branches/luci18/l
 
 #DDNS.to内网穿透插件
 svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
+
+#解除网易云音乐播放限制的 OpenWrt 插件
+git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
