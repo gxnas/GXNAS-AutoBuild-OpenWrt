@@ -18,9 +18,6 @@ sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf
 #新版去广告插件
 svn export --force https://github.com/project-lede/luci-app-godproxy package/diy/luci-app-godproxy
 
-#DDNS.to内网穿透插件
-svn export --force https://github.com/linkease/ddnsto-openwrt package/network/services
-
 #bypass插件
 #git clone https://github.com/garypang13/luci-app-bypass.git
 
