@@ -29,3 +29,6 @@ svn export --force https://github.com/linkease/ddnsto-openwrt package/network/se
 
 #解除网易云音乐播放限制的 OpenWrt 插件
 git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
+
+#luci-theme-argon主题
+git clone https://github.com/jerrykuku/luci-theme-argon.git 
