@@ -33,3 +33,6 @@ git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
 
 # 添加京东脚本
 git clone  https://github.com/ITdesk01/jd_openwrt_script.git package/jd_openwrt_script
+
+#luci-theme-argon主题
+git clone https://github.com/jerrykuku/luci-theme-argon.git 
