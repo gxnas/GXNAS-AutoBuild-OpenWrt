@@ -27,3 +27,6 @@ git clone https://github.com/jerrykuku/luci-app-vssr.git
 
 #解除网易云音乐播放限制的 OpenWrt 插件
 git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
+
+#luci-theme-argon主题
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
