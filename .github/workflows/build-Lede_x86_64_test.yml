@@ -253,14 +253,14 @@ jobs:
         fi
         cd bin/targets/*/*
         rm -rf packages && mkdir packages
-        # find -name "*buildinfo*" | xargs -i mv -f {} packages
-        # find -name "*sha256sums*" | xargs -i mv -f {} packages
-        # find -name "*manifest*" | xargs -i mv -f {} packages
-        # find -name "*vmlinuz*" | xargs -i mv -f {} packages
-        # find -name "*Image*" | xargs -i mv -f {} packages
-        rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
-        mv openwrt-x86-64-generic-squashfs-combined.img openwrt-${{matrix.target}}-${{ env.date }}.img
-        gzip *.img
+        find -name "*buildinfo*" | xargs -i mv -f {} packages
+        find -name "*sha256sums*" | xargs -i mv -f {} packages
+        find -name "*manifest*" | xargs -i mv -f {} packages
+        find -name "*vmlinuz*" | xargs -i mv -f {} packages
+        find -name "*Image*" | xargs -i mv -f {} packages
+        #rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
+        #mv openwrt-x86-64-generic-squashfs-combined.img openwrt-${{matrix.target}}-${{ env.date }}.img
+        #gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "BOT=TRUE" >> $GITHUB_ENV
