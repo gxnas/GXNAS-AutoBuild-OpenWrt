@@ -29,4 +29,4 @@ git clone https://github.com/jerrykuku/luci-app-vssr.git
 git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
 
 #luci-theme-argon主题
-#git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
