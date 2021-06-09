@@ -259,7 +259,7 @@ jobs:
         # find -name "*vmlinuz*" | xargs -i mv -f {} packages
         # find -name "*Image*" | xargs -i mv -f {} packages
         rm -rf `ls | grep -v "openwrt-x86-64-generic-squashfs-combined.img"`
-        mv openwrt-x86-64-generic-squashfs-combined.img openwrt-${{matrix.target}}-${{ env.date }}.img
+        cp coolsnowwolf-18.06-lede-*.img.gz openwrt-${{matrix.target}}-${{ env.date }}.img.gz
         gzip *.img
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
