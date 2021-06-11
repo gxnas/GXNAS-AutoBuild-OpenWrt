@@ -35,4 +35,5 @@ git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
 git clone  https://github.com/ITdesk01/jd_openwrt_script.git package/jd_openwrt_script
 
 #luci-theme-argon主题
-git clone https://github.com/jerrykuku/luci-theme-argon.git 
+rm -rf package/lean/luci-theme-argon  
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
