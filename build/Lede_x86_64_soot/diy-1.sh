@@ -30,3 +30,7 @@ sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf
 
 #解除网易云音乐播放限制的 OpenWrt 插件
 #git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
+
+#luci-theme-argon主题
+rm -rf package/lean/luci-theme-argon  
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
