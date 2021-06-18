@@ -34,3 +34,7 @@ sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf
 #luci-theme-argon主题
 rm -rf package/lean/luci-theme-argon  
 git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
+
+#实时监控luci-app-netdata
+rm -rf package/lean/luci-app-netdata  
+git clone https://github.com/sirpdboy/luci-app-netdata package/lean/luci-app-netdata
