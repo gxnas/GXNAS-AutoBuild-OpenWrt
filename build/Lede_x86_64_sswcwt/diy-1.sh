@@ -29,8 +29,8 @@ svn export --force https://github.com/linkease/ddnsto-openwrt package/network/se
 #git clone https://github.com/jerrykuku/luci-app-vssr.git
 rm -rf package/lean/lua-maxminddb
 rm -rf package/lean/luci-app-vssr
-git clone https://github.com/jerrykuku/lua-maxminddb.git package/lean
-git clone https://github.com/jerrykuku/luci-app-vssr.git package/lean
+git clone https://github.com/jerrykuku/lua-maxminddb.git package/lean/lua-maxminddb
+git clone https://github.com/jerrykuku/luci-app-vssr.git package/lean/luci-app-vssr
 
 
 #解除网易云音乐播放限制的 OpenWrt 插件
