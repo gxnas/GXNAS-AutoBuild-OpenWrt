@@ -27,6 +27,8 @@ svn export --force https://github.com/linkease/ddnsto-openwrt package/network/se
 #HelloWorld和相关的依赖
 #git clone https://github.com/jerrykuku/lua-maxminddb.git
 #git clone https://github.com/jerrykuku/luci-app-vssr.git
+rm -rf package/lean/lua-maxminddb
+rm -rf package/lean/luci-app-vssr
 git clone https://github.com/jerrykuku/lua-maxminddb.git package/lean
 git clone https://github.com/jerrykuku/luci-app-vssr.git package/lean
 
