@@ -35,3 +35,6 @@ git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lea
 #实时监控luci-app-netdata
 rm -rf package/lean/luci-app-netdata  
 git clone https://github.com/sirpdboy/luci-app-netdata package/lean/luci-app-netdata
+
+#Mesh有线+无线回程
+git clone https://github.com/ntlf9t/luci-app-easymesh package/lean/luci-app-easymesh
