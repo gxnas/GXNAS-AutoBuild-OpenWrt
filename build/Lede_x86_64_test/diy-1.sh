@@ -15,19 +15,6 @@
 sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 
-#新版去广告插件
-svn export --force https://github.com/project-lede/luci-app-godproxy package/diy/luci-app-godproxy
-
-#bypass插件
-#git clone https://github.com/garypang13/luci-app-bypass.git
-
-#HelloWorld和相关的依赖
-git clone https://github.com/jerrykuku/lua-maxminddb.git
-git clone https://github.com/jerrykuku/luci-app-vssr.git  
-
-#解除网易云音乐播放限制的 OpenWrt 插件
-git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
-
 #luci-theme-argon主题
 rm -rf package/lean/luci-theme-argon  
 git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
